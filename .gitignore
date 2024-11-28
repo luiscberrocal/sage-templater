@@ -115,3 +115,4 @@ site/
 output/
 
 __*_*_sheets__.json
+tests/fixtures/.~lock.small_box_client1.xlsx#

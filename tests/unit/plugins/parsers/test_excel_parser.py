@@ -1,10 +1,12 @@
 import openpyxl
+import pytest
+
+from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets, get_start_and_end_row_numbers
 
 
 class TestGetWbAndSheets:
 
     def test_get_wb_and_sheets(self, small_box_xlsx_c1):
-        from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         assert isinstance(wb, openpyxl.Workbook)
         expected_sheets = [
@@ -48,5 +50,52 @@ class TestGetWbAndSheets:
             "JULIO 2021",
             "AGOSTO 2021"
         ]
-        
+
         assert sheets == expected_sheets
+
+
+class TestGetStartAndEndRowNumbers:
+
+    @pytest.mark.parametrize("sheet_name, expected_start_row, expected_end_row",
+                             [
+                                 ("14 DE ENERO ", 10, 42),
+                                 ("31 DE ENERO", 10, 47),
+                                 ("26 DE FEBRERO", 10, 39),
+                                 ("1 DE ABRIL", 10, 57),
+                                 ("2 DE MAYO", 10, 42),
+                                 ("1 DE JUNIO", 10, 42),
+                                 ("29 DE JUNIO", 10, 42),
+                                 ("COLOMBIA JUL19", 10, 42),
+                                 ("REEMBOLSO", 10, 42),
+                                 ("29 DE JULIO", 10, 42),
+                                 ("2 DE SEPTIEMBRE", 10, 42),
+                                 ("30 DE SEPTIEMBRE", 10, 42),
+                                 ("30 DE OCTUBRE", 10, 42),
+                                 ("COLOMBIA NOV19", 10, 42),
+                                 ("Hoja1", 10, 42),
+                                 ("30 DE NOVIEMBRE", 10, 42),
+                                 ("30 DE DICIEMBRE", 10, 42),
+                                 ("31 DE ENERO 2019", 10, 42),
+                                 ("29 DE FEBRERO 2020", 10, 42),
+                                 ("MARZO", 10, 42),
+                                 ("ABRIL", 10, 42),
+                                 ("MAYO", 10, 42),
+                                 ("VIÁTICO OSVALDO", 10, 42),
+                                 ("VIÁTICO FARIEL", 10, 42),
+                                 ("JUNIO ", 10, 42),
+                                 ("JULIO", 10, 42),
+                                 ("AGOSTO", 10, 42),
+                                 ("SEPTIEMBRE", 10, 42),
+                                 ("OCTUBRE", 10, 42),
+                                 ("NOVIEMBRE", 10, 42),
+                                 ("DICIEMBRE", 10, 42),
+                                 ("ENERO 2021", 10, 42),
+                                 ("FEBRERO 2021", 10, 42),
+                                 ("MARZO 2021", 10, 42),
+                                 ("ABRIL 2021", 10, 42),
+                             ])
+    def test_get_start_and_end_row_numbers(self, sheet_name, expected_start_row, expected_end_row, small_box_xlsx_c1):
+        wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        assert start_row == expected_start_row, f"Expected {expected_start_row} but got {start_row} for {sheet_name}"
+        assert end_row == expected_end_row, f"Expected {expected_end_row} but got {end_row} for {sheet_name}"

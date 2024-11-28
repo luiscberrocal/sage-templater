@@ -1,4 +1,3 @@
-from datetime import date
 from decimal import Decimal
 from typing import Optional
 
@@ -17,3 +16,5 @@ class SmallBoxRecordSchema(BaseModel):
     tax: Decimal
     total: Decimal
     description: str
+    source_file: Optional[str] = None
+    source_sheet: Optional[str] = None
