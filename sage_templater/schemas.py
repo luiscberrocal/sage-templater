@@ -7,12 +7,12 @@ from pydantic import BaseModel
 
 class SmallBoxRecordSchema(BaseModel):
     """Small box record schema."""
-    code: str
+    code: Optional[str] = None
     national_id: Optional[str] = None
     verification_digit: Optional[str] = None
     name: str
-    invoice: str
-    date: date
+    invoice: Optional[str] = None
+    date: str
     amount: Decimal
     tax: Decimal
     total: Decimal
