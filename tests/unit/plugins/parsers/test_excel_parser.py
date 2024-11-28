@@ -1,7 +1,8 @@
 import openpyxl
 import pytest
 
-from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets, get_start_and_end_row_numbers, get_raw_rows
+from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets, get_start_and_end_row_numbers, get_raw_rows, \
+    parse_raw_rows
 
 
 class TestGetWbAndSheets:
@@ -62,9 +63,9 @@ class TestGetStartAndEndRowNumbers:
                                  ("31 DE ENERO", 10, 47),
                                  ("26 DE FEBRERO", 10, 39),
                                  ("1 DE ABRIL", 10, 57),
-                                 ("2 DE MAYO", 10, 42),
-                                 ("1 DE JUNIO", 10, 42),
-                                 ("29 DE JUNIO", 10, 42),
+                                 ("2 DE MAYO", 10, 47),
+                                 ("1 DE JUNIO", 10, 60),
+                                 ("29 DE JUNIO", 10, 48),
                                  ("COLOMBIA JUL19", 10, 42),
                                  ("REEMBOLSO", 10, 42),
                                  ("29 DE JULIO", 10, 42),
@@ -107,6 +108,16 @@ class TestGetRawRows:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         start_row, end_row = get_start_and_end_row_numbers(wb, "14 DE ENERO ")
         raw_rows = get_raw_rows(wb, "14 DE ENERO ", start_row, end_row)
-        for row in raw_rows:
-            print(row)
-            print("-"*80)
+        assert len(raw_rows) == end_row - start_row + 1
+
+
+class TestParseRawRows:
+
+    def test_parse_raw_rows(self, small_box_xlsx_c1):
+        wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
+        start_row, end_row = get_start_and_end_row_numbers(wb, "14 DE ENERO ")
+        raw_rows = get_raw_rows(wb, "14 DE ENERO ", start_row, end_row)
+        records = parse_raw_rows(raw_rows, "small_box_client1.xlsx", "14 DE ENERO ")
+        for r in records:
+            print(r)
+            print("-" * 80)
