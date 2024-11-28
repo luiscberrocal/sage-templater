@@ -1,3 +1,4 @@
+from decimal import Decimal
 from pathlib import Path
 from typing import List
 
@@ -38,13 +39,16 @@ def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row
     return raw_rows
 
 
-
 def parse_raw_rows(raw_rows: List[List[str]], source_file: str, source_sheet: str) -> List[SmallBoxRecordSchema]:
     """Parse raw rows from a sheet with the small box format."""
     records = []
-    for raw_row in raw_rows:
-        if len(raw_row) < 10:
+    for i, raw_row in enumerate(raw_rows, 1):
+        if len(raw_row) < 10 or i == 1:
             continue
+        print(f"Amount: {raw_row[6]}")
+        if raw_row[6] is not None:
+            break
+        # print(f"raw_row: {raw_row}")
         record = SmallBoxRecordSchema(
             code=raw_row[0],
             national_id=raw_row[1],
@@ -52,15 +56,16 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: str, source_sheet: st
             name=raw_row[3],
             invoice=raw_row[4],
             date=raw_row[5],
-            amount=raw_row[6],
-            tax=raw_row[7],
-            total=raw_row[8],
+            amount=Decimal(raw_row[6]),
+            tax=Decimal(raw_row[7]),
+            total=Decimal(raw_row[8]),
             description=raw_row[9],
             source_file=source_file,
             source_sheet=source_sheet
         )
         records.append(record)
     return records
+
 
 @hookimpl
 def parse_file(file_path: str) -> List[SmallBoxRecordSchema]:
