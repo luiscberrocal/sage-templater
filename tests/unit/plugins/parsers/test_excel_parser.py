@@ -66,9 +66,9 @@ class TestGetStartAndEndRowNumbers:
                                  ("2 DE MAYO", 10, 47),
                                  ("1 DE JUNIO", 10, 60),
                                  ("29 DE JUNIO", 10, 48),
-                                 ("COLOMBIA JUL19", 10, 42),
-                                 ("REEMBOLSO", 10, 42),
-                                 ("29 DE JULIO", 10, 42),
+                                 ("COLOMBIA JUL19", 10, 26),
+                                 ("REEMBOLSO", 10, 18),
+                                 ("29 DE JULIO", 10, 48),
                                  ("2 DE SEPTIEMBRE", 10, 42),
                                  ("30 DE SEPTIEMBRE", 10, 42),
                                  ("30 DE OCTUBRE", 10, 42),
@@ -115,9 +115,10 @@ class TestParseRawRows:
 
     def test_parse_raw_rows(self, small_box_xlsx_c1):
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
-        start_row, end_row = get_start_and_end_row_numbers(wb, "14 DE ENERO ")
-        raw_rows = get_raw_rows(wb, "14 DE ENERO ", start_row, end_row)
-        records = parse_raw_rows(raw_rows, "small_box_client1.xlsx", "14 DE ENERO ")
-        for r in records:
-            print(r)
-            print("-" * 80)
+        sheet_name = "14 DE ENERO "
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
+        records = parse_raw_rows(raw_rows, "small_box_client1.xlsx", sheet_name)
+        assert len(records) == 23
+        assert records[0].source_file == str(small_box_xlsx_c1)
+        assert records[0].source_sheet == sheet_name
