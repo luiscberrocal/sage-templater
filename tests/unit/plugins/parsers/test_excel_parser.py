@@ -1,7 +1,7 @@
 import openpyxl
 import pytest
 
-from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets, get_start_and_end_row_numbers
+from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets, get_start_and_end_row_numbers, get_raw_rows
 
 
 class TestGetWbAndSheets:
@@ -99,3 +99,14 @@ class TestGetStartAndEndRowNumbers:
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         assert start_row == expected_start_row, f"Expected {expected_start_row} but got {start_row} for {sheet_name}"
         assert end_row == expected_end_row, f"Expected {expected_end_row} but got {end_row} for {sheet_name}"
+
+
+class TestGetRawRows:
+
+    def test_get_raw_rows(self, small_box_xlsx_c1):
+        wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
+        start_row, end_row = get_start_and_end_row_numbers(wb, "14 DE ENERO ")
+        raw_rows = get_raw_rows(wb, "14 DE ENERO ", start_row, end_row)
+        for row in raw_rows:
+            print(row)
+            print("-"*80)
