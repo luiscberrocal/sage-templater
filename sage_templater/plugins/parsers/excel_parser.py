@@ -39,7 +39,7 @@ def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row
     return raw_rows
 
 
-def parse_raw_rows(raw_rows: List[List[str]], source_file: str, source_sheet: str) -> List[SmallBoxRecordSchema]:
+def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: str) -> List[SmallBoxRecordSchema]:
     """Parse raw rows from a sheet with the small box format."""
     records = []
     for i, raw_row in enumerate(raw_rows, 1):
@@ -60,7 +60,7 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: str, source_sheet: st
             tax=Decimal(raw_row[7]),
             total=Decimal(raw_row[8]),
             description=raw_row[9],
-            source_file=source_file,
+            source_file=str(source_file),
             source_sheet=source_sheet
         )
         records.append(record)

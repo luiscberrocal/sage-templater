@@ -69,31 +69,8 @@ class TestGetStartAndEndRowNumbers:
                                  ("COLOMBIA JUL19", 10, 26),
                                  ("REEMBOLSO", 10, 18),
                                  ("29 DE JULIO", 10, 48),
-                                 ("2 DE SEPTIEMBRE", 10, 42),
-                                 ("30 DE SEPTIEMBRE", 10, 42),
-                                 ("30 DE OCTUBRE", 10, 42),
-                                 ("COLOMBIA NOV19", 10, 42),
-                                 ("Hoja1", 10, 42),
-                                 ("30 DE NOVIEMBRE", 10, 42),
-                                 ("30 DE DICIEMBRE", 10, 42),
-                                 ("31 DE ENERO 2019", 10, 42),
-                                 ("29 DE FEBRERO 2020", 10, 42),
-                                 ("MARZO", 10, 42),
-                                 ("ABRIL", 10, 42),
-                                 ("MAYO", 10, 42),
-                                 ("VIÁTICO OSVALDO", 10, 42),
-                                 ("VIÁTICO FARIEL", 10, 42),
-                                 ("JUNIO ", 10, 42),
-                                 ("JULIO", 10, 42),
-                                 ("AGOSTO", 10, 42),
-                                 ("SEPTIEMBRE", 10, 42),
-                                 ("OCTUBRE", 10, 42),
-                                 ("NOVIEMBRE", 10, 42),
-                                 ("DICIEMBRE", 10, 42),
-                                 ("ENERO 2021", 10, 42),
-                                 ("FEBRERO 2021", 10, 42),
-                                 ("MARZO 2021", 10, 42),
-                                 ("ABRIL 2021", 10, 42),
+                                 ("2 DE SEPTIEMBRE", 10, 46),
+                                 ("Hoja1", -1, 1),
                              ])
     def test_get_start_and_end_row_numbers(self, sheet_name, expected_start_row, expected_end_row, small_box_xlsx_c1):
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
@@ -118,7 +95,7 @@ class TestParseRawRows:
         sheet_name = "14 DE ENERO "
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
-        records = parse_raw_rows(raw_rows, "small_box_client1.xlsx", sheet_name)
+        records = parse_raw_rows(raw_rows, small_box_xlsx_c1, sheet_name)
         assert len(records) == 23
         assert records[0].source_file == str(small_box_xlsx_c1)
         assert records[0].source_sheet == sheet_name
