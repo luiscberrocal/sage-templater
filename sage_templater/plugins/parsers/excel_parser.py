@@ -45,10 +45,8 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
     for i, raw_row in enumerate(raw_rows, 1):
         if len(raw_row) < 10 or i == 1:
             continue
-        # print(f"Amount: {raw_row[6]} {type(raw_row[6])}")
         if raw_row[6] is None or raw_row[6] == "None":
             break
-        # print(f"raw_row: {raw_row}")
         record = SmallBoxRecordSchema(
             code=raw_row[0],
             national_id=raw_row[1],

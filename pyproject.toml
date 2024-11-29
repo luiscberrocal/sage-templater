@@ -106,7 +106,7 @@ convention = "google"
 # Ignore `E402` (import violations) in all `__init__.py` files, and in `path/to/file.py`.
 "__init__.py" = ["E402", "D"]
 # Ignore `D` rules everywhere except for the `src/` directory.
-"sage-templater/tests/**.py" =  ["D", "ANN", "ERA", "PLR", "ARG", "SLF"]
+"tests/**.py" =  ["D", "ANN", "ERA", "PLR", "ARG", "SLF"]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.

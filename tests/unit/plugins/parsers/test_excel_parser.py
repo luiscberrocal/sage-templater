@@ -76,7 +76,8 @@ class TestGetStartAndEndRowNumbers:
             ("Hoja1", -1, 1),
         ],
     )
-    def test_get_start_and_end_row_numbers(self, sheet_name, expected_start_row, expected_end_row, small_box_xlsx_c1) -> None:
+    def test_get_start_and_end_row_numbers(self, sheet_name, expected_start_row, expected_end_row,
+                                           small_box_xlsx_c1) -> None:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         assert start_row == expected_start_row, f"Expected {expected_start_row} but got {start_row} for {sheet_name}"
