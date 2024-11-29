@@ -61,7 +61,7 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
             total=Decimal(raw_row[8]),
             description=raw_row[9],
             source_file=str(source_file),
-            source_sheet=source_sheet
+            source_sheet=source_sheet,
         )
         records.append(record)
     return records
@@ -71,3 +71,4 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
 def parse_file(file_path: str) -> List[SmallBoxRecordSchema]:
     if not file_path.endswith(".xlsx"):
         return []
+    return None
