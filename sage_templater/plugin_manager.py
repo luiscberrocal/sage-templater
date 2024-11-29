@@ -10,7 +10,7 @@ hookimpl = pluggy.HookimplMarker("template_parser")
 
 class TemplateParserSpecs:
     @hookspec
-    def parse_file(file_path: str) -> List[SmallBoxRecordSchema]:
+    def parse_file(self: str) -> List[SmallBoxRecordSchema]:
         """Parse a file and return a list of SmallBoxRecordSchema."""
         pass
 

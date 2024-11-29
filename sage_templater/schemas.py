@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 class SmallBoxRecordSchema(BaseModel):
     """Small box record schema."""
+
     code: Optional[str] = None
     national_id: Optional[str] = None
     verification_digit: Optional[str] = None
