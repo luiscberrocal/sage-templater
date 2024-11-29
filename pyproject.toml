@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "sage-templater"
-version = "0.1.0"
+version = "0.2.0"
 homepage = "https://github.com/luiscberrocal/sage-templater"
 description = "App to parse templates and create them as a Sage import files.."
 authors = ["Luis C. Berrocal <luis.berrocal.1942@gmail.com>"]
@@ -27,13 +27,15 @@ python = ">=3.10,<3.13"
 click = "^8.1.7"
 rich = "^13.9.1"
 pydantic = "^2.9.2"
+openpyxl = "^3.1.5"
+pluggy = "^1.5.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.7.3"
 pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
 pytest-mock = "^3.14.0"
-factory-boy = "^3.3.7"
+factory-boy = "^3.3.1"
 pytz = "^2024.1"
 bump2version = "^1.0.1"
 twine = "^4.0.2"
