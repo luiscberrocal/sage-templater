@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "sage-templater"
-version = "0.2.3"
+version = "0.3.0"
 homepage = "https://github.com/luiscberrocal/sage-templater"
 description = "App to parse templates and create them as a Sage import files.."
 authors = ["Luis C. Berrocal <luis.berrocal.1942@gmail.com>"]
