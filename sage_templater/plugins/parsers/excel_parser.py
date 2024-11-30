@@ -7,7 +7,9 @@ import openpyxl
 from sage_templater.exceptions import SageParseRawError
 from sage_templater.plugin_manager import hookimpl
 from sage_templater.schemas import SmallBoxRecordSchema
+import logging
 
+logger = logging.getLogger(__name__)
 
 def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
     """Get workbook and sheets from an Excel file."""
@@ -46,9 +48,12 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
     for i, raw_row in enumerate(raw_rows, 1):
         try:
             if len(raw_row) < 10 or i == 1:
+                logger.debug("Skipping row %s. Row: %s", i, raw_row)
                 continue
             if raw_row[6] is None or raw_row[6] == "None":
+                logger.debug("Stopping row %s. Row: %s", i, raw_row)
                 break
+            logger.debug("Parsing row %s. Row: %s", i, raw_row)
             record = SmallBoxRecordSchema(
                 code=raw_row[0],
                 national_id=raw_row[1],
@@ -65,10 +70,11 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
             )
             records.append(record)
         except Exception as e:
+            logger.error("Error parsing row %s from %s - %s. Row: %s", i, source_file, source_sheet, raw_row)
             error_message = (f"Error parsing row {i} from {source_file} - {source_sheet}."
                              f" Error type: {e.__class__.__name__} Error: {e}")
             raise SageParseRawError(error_message) from e
-        return records
+    return records
 
 
 @hookimpl
