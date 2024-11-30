@@ -63,7 +63,7 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
                 invoice=raw_row[4],
                 date=raw_row[5],
                 amount=Decimal(raw_row[6]),
-                tax=Decimal(raw_row[7]),
+                tax=raw_row[7],
                 total=Decimal(raw_row[8]),
                 description=raw_row[9],
                 source_file=str(source_file),
