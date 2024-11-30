@@ -78,8 +78,9 @@ class TestGetStartAndEndRowNumbers:
             ("Hoja1", -1, 1),
         ],
     )
-    def test_get_start_and_end_row_numbers(self, sheet_name, expected_start_row, expected_end_row,
-                                           small_box_xlsx_c1) -> None:
+    def test_get_start_and_end_row_numbers(
+        self, sheet_name, expected_start_row, expected_end_row, small_box_xlsx_c1
+    ) -> None:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         assert start_row == expected_start_row, f"Expected {expected_start_row} but got {start_row} for {sheet_name}"
@@ -106,10 +107,12 @@ class TestParseRawRows:
         assert records[0].source_sheet == sheet_name
 
     def test_tmp(self):
-        xl_file = Path("/home/luiscberrocal/PycharmProjects/sage-templater/tests/fixtures/CAJA MENUDA OPERACIONES gerencia dic 2021.xlsx")
+        xl_file = Path(
+            "/home/luiscberrocal/PycharmProjects/sage-templater/tests/fixtures/CAJA MENUDA OPERACIONES gerencia dic 2021.xlsx"
+        )
         wb, sheets = get_wb_and_sheets(xl_file)
         sheet_name = "COLOMBIA NOV19"
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
-        records = parse_raw_rows(raw_rows,xl_file, sheet_name)
+        records = parse_raw_rows(raw_rows, xl_file, sheet_name)
         assert len(records) == 11
