@@ -8,7 +8,7 @@ def validate_tax(value: AnyStr):
     """Validate the tax value."""
     if isinstance(value, tuple):
         value = value[0]
-    if value is None or len(value) == 0 or value == "None":
+    if value is None or value == "" or value == "None":
         return Decimal("0.0")
     return Decimal(value)
 
