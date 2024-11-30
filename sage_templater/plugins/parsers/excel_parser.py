@@ -4,6 +4,7 @@ from typing import List
 
 import openpyxl
 
+from sage_templater.exceptions import SageParseRawError
 from sage_templater.plugin_manager import hookimpl
 from sage_templater.schemas import SmallBoxRecordSchema
 
@@ -43,26 +44,31 @@ def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: s
     """Parse raw rows from a sheet with the small box format."""
     records = []
     for i, raw_row in enumerate(raw_rows, 1):
-        if len(raw_row) < 10 or i == 1:
-            continue
-        if raw_row[6] is None or raw_row[6] == "None":
-            break
-        record = SmallBoxRecordSchema(
-            code=raw_row[0],
-            national_id=raw_row[1],
-            verification_digit=raw_row[2],
-            name=raw_row[3],
-            invoice=raw_row[4],
-            date=raw_row[5],
-            amount=Decimal(raw_row[6]),
-            tax=Decimal(raw_row[7]),
-            total=Decimal(raw_row[8]),
-            description=raw_row[9],
-            source_file=str(source_file),
-            source_sheet=source_sheet,
-        )
-        records.append(record)
-    return records
+        try:
+            if len(raw_row) < 10 or i == 1:
+                continue
+            if raw_row[6] is None or raw_row[6] == "None":
+                break
+            record = SmallBoxRecordSchema(
+                code=raw_row[0],
+                national_id=raw_row[1],
+                verification_digit=raw_row[2],
+                name=raw_row[3],
+                invoice=raw_row[4],
+                date=raw_row[5],
+                amount=Decimal(raw_row[6]),
+                tax=Decimal(raw_row[7]),
+                total=Decimal(raw_row[8]),
+                description=raw_row[9],
+                source_file=str(source_file),
+                source_sheet=source_sheet,
+            )
+            records.append(record)
+        except Exception as e:
+            error_message = (f"Error parsing row {i} from {source_file} - {source_sheet}."
+                             f" Error type: {e.__class__.__name__} Error: {e}")
+            raise SageParseRawError(error_message) from e
+        return records
 
 
 @hookimpl

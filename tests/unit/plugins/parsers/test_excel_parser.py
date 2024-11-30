@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import openpyxl
 import pytest
 
@@ -102,3 +104,12 @@ class TestParseRawRows:
         assert len(records) == 23
         assert records[0].source_file == str(small_box_xlsx_c1)
         assert records[0].source_sheet == sheet_name
+
+    def test_tmp(self):
+        xl_file = Path("/home/luiscberrocal/PycharmProjects/sage-templater/tests/fixtures/CAJA MENUDA OPERACIONES gerencia dic 2021.xlsx")
+        wb, sheets = get_wb_and_sheets(xl_file)
+        sheet_name = "COLOMBIA NOV19"
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
+        records = parse_raw_rows(raw_rows,xl_file, sheet_name)
+        assert len(records) == 23
