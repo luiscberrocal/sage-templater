@@ -1,4 +1,5 @@
 import logging
+import re
 from decimal import Decimal
 from pathlib import Path
 from typing import List
@@ -20,13 +21,19 @@ def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
 
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
     """Get start and end row numbers from a sheet with the small box format."""
+
+    regexp = re.compile(r"\s*([Cc][oOó][Dd][Ii][Gg][Oo])\s*")
     sheet = wb[sheet_name]
     start_row = -1
     end_row = sheet.max_row
-    for i, row in enumerate(sheet.iter_rows(), 1):
+    i = 1
+    for row in sheet.iter_rows():
+        i += 1
         cell_value = row[0].value
-
-        if cell_value in ["Código", "CÓDIGO", "CODIGO", "Codigo"]:
+        if cell_value is None or not isinstance(cell_value, str):
+            continue
+        match = regexp.match(cell_value)
+        if match:
             start_row = i
             break
     return start_row, end_row
