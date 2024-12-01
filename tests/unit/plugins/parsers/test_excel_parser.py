@@ -139,4 +139,4 @@ class TestParseRawRows:
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
         clean_rows = clean_raw_rows(raw_rows)
         records = parse_raw_rows(clean_rows, xl_file, sheet_name)
-        assert len(records) == 29
+        assert len(records) == 28

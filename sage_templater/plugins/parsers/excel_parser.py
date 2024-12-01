@@ -56,21 +56,43 @@ def is_empty_row(raw_row: List[str]) -> bool:
     return all(cell is None or cell == 'None' for cell in raw_row)
 
 
+def is_valid_row(raw_row: List[str]) -> bool:
+    try:
+        SmallBoxRecordSchema(
+            code=raw_row[0],
+            national_id=raw_row[1],
+            verification_digit=raw_row[2],
+            name=raw_row[3],
+            invoice=raw_row[4],
+            date=raw_row[5],
+            amount=Decimal(raw_row[6]),
+            tax=raw_row[7],
+            total=Decimal(raw_row[8]),
+            description=raw_row[9],
+            # source_file=str(source_file),
+            # source_sheet=source_sheet,
+        )
+        return True
+    except Exception as e:
+        return False
+
+
 def clean_raw_rows(raw_rows: List[List[str]]) -> List[List[str]]:
     """Clean raw rows from a sheet with the small box format."""
     cleaned_raw_rows = []
     for raw_row in raw_rows:
-        if not is_empty_row(raw_row):
+        if not is_empty_row(raw_row) and is_valid_row(raw_row):
             cleaned_raw_rows.append(raw_row)
     return cleaned_raw_rows
 
 
-def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: str) -> List[SmallBoxRecordSchema]:
+def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: str,
+                   has_headers: bool = False) -> List[SmallBoxRecordSchema]:
     """Parse raw rows from a sheet with the small box format."""
     records = []
     for i, raw_row in enumerate(raw_rows, 1):
         try:
-            if len(raw_row) < 10 or i == 1:
+            if len(raw_row) < 10 or (i == 1 and has_headers):
                 logger.debug("Skipping row %s. Row: %s", i, raw_row)
                 continue
             if raw_row[6] is None or raw_row[6] == "None":
