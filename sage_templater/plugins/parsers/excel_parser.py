@@ -43,6 +43,20 @@ def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row
     return raw_rows
 
 
+def is_empty_row(raw_row: List[str]) -> bool:
+    """Check if a row is empty."""
+    return all(cell is None or cell == 'None' for cell in raw_row)
+
+
+def clean_raw_rows(raw_rows: List[List[str]]) -> List[List[str]]:
+    """Clean raw rows from a sheet with the small box format."""
+    cleaned_raw_rows = []
+    for raw_row in raw_rows:
+        if not is_empty_row(raw_row):
+            cleaned_raw_rows.append(raw_row)
+    return cleaned_raw_rows
+
+
 def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: str) -> List[SmallBoxRecordSchema]:
     """Parse raw rows from a sheet with the small box format."""
     records = []
