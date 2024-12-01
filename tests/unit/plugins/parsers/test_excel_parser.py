@@ -7,7 +7,7 @@ from sage_templater.plugins.parsers.excel_parser import (
     get_raw_rows,
     get_start_and_end_row_numbers,
     get_wb_and_sheets,
-    parse_raw_rows,
+    parse_raw_rows, clean_raw_rows,
 )
 
 
@@ -95,6 +95,18 @@ class TestGetRawRows:
         assert len(raw_rows) == end_row - start_row + 1
 
 
+class TestCleanRawRows:
+
+    def test_clean_raw_rows(self, small_box_xlsx_c1) -> None:
+        wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
+        sheet_name = "14 DE ENERO "
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
+        cleaned_raw_rows = clean_raw_rows(raw_rows)
+
+        assert len(cleaned_raw_rows) == 29
+
+
 class TestParseRawRows:
     def test_parse_raw_rows(self, small_box_xlsx_c1) -> None:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
@@ -116,3 +128,15 @@ class TestParseRawRows:
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
         records = parse_raw_rows(raw_rows, xl_file, sheet_name)
         assert len(records) == 9
+
+    def test_tmp2(self):
+        xl_file = Path(
+            "/home/luiscberrocal/Downloads/sage/data/2021/Diciembre/CAJA MENUDA 2021 COMPRAS JENNY DIC 30.xlsx"
+        )
+        wb, sheets = get_wb_and_sheets(xl_file)
+        sheet_name = "II enero "
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
+        clean_rows = clean_raw_rows(raw_rows)
+        records = parse_raw_rows(clean_rows, xl_file, sheet_name)
+        assert len(records) == 28
