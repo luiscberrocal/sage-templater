@@ -23,11 +23,12 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
     sheet = wb[sheet_name]
     start_row = -1
     end_row = sheet.max_row
-    for row in sheet.iter_rows():
-        for cell in row:
-            if cell.value in ["Código", "CÓDIGO"]:
-                start_row = cell.row
-                break
+    for i, row in enumerate(sheet.iter_rows(), 1):
+        cell_value = row[0].value
+
+        if cell_value in ["Código", "CÓDIGO", "CODIGO", "Codigo"]:
+            start_row = i
+            break
     return start_row, end_row
 
 
