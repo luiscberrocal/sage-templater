@@ -22,11 +22,11 @@ def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
     """Get start and end row numbers from a sheet with the small box format."""
 
-    regexp = re.compile(r"\s*([Cc][oOó][Dd][Ii][Gg][Oo])\s*")
+    regexp = re.compile(r"\s*([Cc][oOóÓ][Dd][Ii][Gg][Oo])\s*")
     sheet = wb[sheet_name]
     start_row = -1
     end_row = sheet.max_row
-    i = 1
+    i = 0
     for row in sheet.iter_rows():
         i += 1
         cell_value = row[0].value
