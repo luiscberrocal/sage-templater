@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Annotated, AnyStr, Optional
 
-from pydantic import AfterValidator, BaseModel, BeforeValidator
+from pydantic import BaseModel, BeforeValidator
 
 
 def validate_tax(value: AnyStr):

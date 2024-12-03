@@ -12,10 +12,13 @@ class TestSmallBoxRecordSchema:
         assert schema
         schema_dict = schema.model_dump()
 
-    @pytest.mark.parametrize("tax", [
-        "None",
-        "",
-    ])
+    @pytest.mark.parametrize(
+        "tax",
+        [
+            "None",
+            "",
+        ],
+    )
     def test_tax_zero_defaults(self, tax):
         schema_dict = {
             "code": "71570723",
@@ -29,7 +32,7 @@ class TestSmallBoxRecordSchema:
             "total": "1777.70",
             "description": "Machine speech edge military piece role thus.",
             "source_file": "/agree/edge.mp3",
-            "source_sheet": "security"
+            "source_sheet": "security",
         }
         schema = SmallBoxRecordSchema(**schema_dict)
         assert schema.tax == Decimal("0.0")

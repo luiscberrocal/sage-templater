@@ -4,10 +4,11 @@ import openpyxl
 import pytest
 
 from sage_templater.plugins.parsers.excel_parser import (
+    clean_raw_rows,
     get_raw_rows,
     get_start_and_end_row_numbers,
     get_wb_and_sheets,
-    parse_raw_rows, clean_raw_rows,
+    parse_raw_rows,
 )
 
 
@@ -96,7 +97,6 @@ class TestGetRawRows:
 
 
 class TestCleanRawRows:
-
     def test_clean_raw_rows(self, small_box_xlsx_c1) -> None:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         sheet_name = "14 DE ENERO "
