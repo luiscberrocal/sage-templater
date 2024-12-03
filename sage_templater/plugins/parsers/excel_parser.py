@@ -21,12 +21,11 @@ def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
 
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
     """Get start and end row numbers from a sheet with the small box format."""
-
-    regexp = re.compile(r"\s*([Cc][oOó][Dd][Ii][Gg][Oo])\s*")
+    regexp = re.compile(r"\s*([Cc][oOóÓ][Dd][Ii][Gg][Oo])\s*")
     sheet = wb[sheet_name]
     start_row = -1
     end_row = sheet.max_row
-    i = 1
+    i = 0
     for row in sheet.iter_rows():
         i += 1
         cell_value = row[0].value
@@ -53,7 +52,7 @@ def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row
 
 def is_empty_row(raw_row: List[str]) -> bool:
     """Check if a row is empty."""
-    return all(cell is None or cell == 'None' for cell in raw_row)
+    return all(cell is None or cell == "None" for cell in raw_row)
 
 
 def is_valid_row(raw_row: List[str]) -> bool:
@@ -72,8 +71,10 @@ def is_valid_row(raw_row: List[str]) -> bool:
             # source_file=str(source_file),
             # source_sheet=source_sheet,
         )
+        if raw_row[9] == "None" or raw_row[9] == "" or raw_row[9] is None:
+            return False
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 
@@ -86,8 +87,9 @@ def clean_raw_rows(raw_rows: List[List[str]]) -> List[List[str]]:
     return cleaned_raw_rows
 
 
-def parse_raw_rows(raw_rows: List[List[str]], source_file: Path, source_sheet: str,
-                   has_headers: bool = False) -> List[SmallBoxRecordSchema]:
+def parse_raw_rows(
+    raw_rows: List[List[str]], source_file: Path, source_sheet: str, has_headers: bool = False
+) -> List[SmallBoxRecordSchema]:
     """Parse raw rows from a sheet with the small box format."""
     records = []
     for i, raw_row in enumerate(raw_rows, 1):
