@@ -72,6 +72,8 @@ def is_valid_row(raw_row: List[str]) -> bool:
             # source_file=str(source_file),
             # source_sheet=source_sheet,
         )
+        if raw_row[9] == "None" or raw_row[9] == "" or raw_row[9] is None:
+            return False
         return True
     except Exception as e:
         return False

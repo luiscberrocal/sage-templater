@@ -104,7 +104,7 @@ class TestCleanRawRows:
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
         cleaned_raw_rows = clean_raw_rows(raw_rows)
 
-        assert len(cleaned_raw_rows) == 29
+        assert len(cleaned_raw_rows) == 23
 
 
 class TestParseRawRows:
@@ -113,7 +113,7 @@ class TestParseRawRows:
         sheet_name = "14 DE ENERO "
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
-        records = parse_raw_rows(raw_rows, small_box_xlsx_c1, sheet_name)
+        records = parse_raw_rows(raw_rows, small_box_xlsx_c1, sheet_name, has_headers=True)
         assert len(records) == 23
         assert records[0].source_file == str(small_box_xlsx_c1)
         assert records[0].source_sheet == sheet_name
@@ -126,7 +126,7 @@ class TestParseRawRows:
         sheet_name = "COLOMBIA NOV19"
         start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
         raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
-        records = parse_raw_rows(raw_rows, xl_file, sheet_name)
+        records = parse_raw_rows(raw_rows, xl_file, sheet_name, has_headers=True)
         assert len(records) == 9
 
     def test_tmp2(self):
