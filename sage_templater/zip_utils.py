@@ -5,7 +5,7 @@ from pathlib import Path
 from tests.conftest import sage_folder
 
 
-def unzip_all_files(downloads_folder: str, target_folder: str):
+def unzip_all_files(downloads_folder: Path, target_folder: Path):
     # Ensure the target folder exists
     os.makedirs(target_folder, exist_ok=True)
 
