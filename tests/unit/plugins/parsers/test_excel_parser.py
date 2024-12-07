@@ -131,7 +131,7 @@ class TestParseRawRows:
 
     def test_tmp2(self):
         xl_file = Path(
-            "/home/luiscberrocal/Downloads/sage/data/2021/Diciembre/CAJA MENUDA 2021 COMPRAS JENNY DIC 30.xlsx"
+            "/home/luiscberrocal/Downloads/sage/data_dc/2021/Diciembre/CAJA MENUDA 2021 COMPRAS JENNY DIC 30.xlsx"
         )
         wb, sheets = get_wb_and_sheets(xl_file)
         sheet_name = "II enero "
@@ -141,6 +141,14 @@ class TestParseRawRows:
         records = parse_raw_rows(clean_rows, xl_file, sheet_name)
         assert len(records) == 28
 
+    def test_error(self, sage_folder):
+        xl_file = sage_folder / 'data_ls/Año 2023/Estados Financieros Formateados Logic Studio 2023 - auditoría.xlsx'
 
-def test_is_small_box_template(small_box_xlsx_c1) -> None:
-    assert is_small_box_template(small_box_xlsx_c1)
+
+class TestIsSmallBoxTemplate:
+    def test_is_small_box_template(self, small_box_xlsx_c1) -> None:
+        assert is_small_box_template(small_box_xlsx_c1)
+
+    def test_error(self, sage_folder):
+        xl_file = sage_folder / 'data_ls/Año 2023/Estados Financieros Formateados Logic Studio 2023 - auditoría.xlsx'
+        assert not is_small_box_template(xl_file)

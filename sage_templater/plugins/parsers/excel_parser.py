@@ -24,6 +24,8 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
     regexp = re.compile(r"\s*([Cc][oOóÓ][Dd][Ii][Gg][Oo])\s*")
     sheet = wb[sheet_name]
     start_row = -1
+    if sheet.max_row is None:
+        return start_row, -1
     end_row = sheet.max_row
     i = 0
     for row in sheet.iter_rows():
