@@ -31,3 +31,12 @@ class SmallBoxRecordSchema(BaseModel):
     description: str
     source_file: Optional[str] = None
     source_sheet: Optional[str] = None
+
+class SmallBoxSageRecordSchema(BaseModel):
+    """Small box record schema for Sage import"""
+    date: str
+    reference: str
+    description: str
+    amount: Decimal
+    account: str
+    distribution_number: int
