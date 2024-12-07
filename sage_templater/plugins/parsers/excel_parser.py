@@ -38,6 +38,12 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
     return start_row, end_row
 
 
+def is_small_box_template(excel_file: Path) -> bool:
+    wb, sheets = get_wb_and_sheets(excel_file)
+    start, end = get_start_and_end_row_numbers(wb, sheets[0])
+    return start != -1
+
+
 def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row: int) -> List[List[str]]:
     """Get raw rows from a sheet with the small box format."""
     sheet = wb[sheet_name]
