@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
     """Get workbook and sheets from an Excel file."""
-    wb = openpyxl.load_workbook(file_path, data_only=True)
+    wb = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
     return wb, wb.sheetnames
 
 

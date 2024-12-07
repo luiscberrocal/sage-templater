@@ -8,7 +8,7 @@ from sage_templater.plugins.parsers.excel_parser import (
     get_raw_rows,
     get_start_and_end_row_numbers,
     get_wb_and_sheets,
-    parse_raw_rows,
+    parse_raw_rows, is_small_box_template,
 )
 
 
@@ -140,3 +140,7 @@ class TestParseRawRows:
         clean_rows = clean_raw_rows(raw_rows)
         records = parse_raw_rows(clean_rows, xl_file, sheet_name)
         assert len(records) == 28
+
+
+def test_is_small_box_template(small_box_xlsx_c1) -> None:
+    assert is_small_box_template(small_box_xlsx_c1)
