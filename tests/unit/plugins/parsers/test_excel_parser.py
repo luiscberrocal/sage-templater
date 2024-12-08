@@ -87,6 +87,14 @@ class TestGetStartAndEndRowNumbers:
         assert start_row == expected_start_row, f"Expected {expected_start_row} but got {start_row} for {sheet_name}"
         assert end_row == expected_end_row, f"Expected {expected_end_row} but got {end_row} for {sheet_name}"
 
+    @pytest.mark.parametrize("only_visible, count", [
+        (True, 7),
+        (False, 8)
+    ])
+    def test_get_start_and_end_row_numbers_hidden_sheets(self,only_visible, count, sage_folder) -> None:
+        xl_file = sage_folder / 'data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx'
+        wb, sheets = get_wb_and_sheets(xl_file, only_visible=only_visible)
+        assert len(sheets) == count
 
 class TestGetRawRows:
     def test_get_raw_rows(self, small_box_xlsx_c1) -> None:
@@ -152,3 +160,8 @@ class TestIsSmallBoxTemplate:
     def test_error(self, sage_folder):
         xl_file = sage_folder / 'data_ls/Año 2023/Estados Financieros Formateados Logic Studio 2023 - auditoría.xlsx'
         assert not is_small_box_template(xl_file)
+
+    def test_error2(self, sage_folder):
+        # /home/luiscberrocal/Downloads/sage/data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx
+        xl_file = sage_folder / 'data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx'
+        assert is_small_box_template(xl_file)

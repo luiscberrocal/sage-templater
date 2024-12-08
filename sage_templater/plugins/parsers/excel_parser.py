@@ -13,9 +13,11 @@ from sage_templater.schemas import SmallBoxRecordSchema
 logger = logging.getLogger(__name__)
 
 
-def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
+def get_wb_and_sheets(file_path: Path, only_visible:bool=True) -> (openpyxl.Workbook, List[str]):
     """Get workbook and sheets from an Excel file."""
     wb = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
+    if only_visible:
+        return wb, [sheet for sheet in wb.sheetnames if wb[sheet].sheet_state == "visible"]
     return wb, wb.sheetnames
 
 
