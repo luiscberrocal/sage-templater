@@ -117,3 +117,4 @@ output/
 __*_*_sheets__.json
 tests/fixtures/.~lock.small_box_client1.xlsx#
 .~lock.*.xlsx#
+tests/fixtures/CAJA MENUDA PRESIDENCIA II.csv

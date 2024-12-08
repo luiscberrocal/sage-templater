@@ -13,9 +13,11 @@ from sage_templater.schemas import SmallBoxRecordSchema
 logger = logging.getLogger(__name__)
 
 
-def get_wb_and_sheets(file_path: Path) -> (openpyxl.Workbook, List[str]):
+def get_wb_and_sheets(file_path: Path, only_visible:bool=True) -> (openpyxl.Workbook, List[str]):
     """Get workbook and sheets from an Excel file."""
-    wb = openpyxl.load_workbook(file_path, data_only=True)
+    wb = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
+    if only_visible:
+        return wb, [sheet for sheet in wb.sheetnames if wb[sheet].sheet_state == "visible"]
     return wb, wb.sheetnames
 
 
@@ -24,6 +26,8 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
     regexp = re.compile(r"\s*([Cc][oOóÓ][Dd][Ii][Gg][Oo])\s*")
     sheet = wb[sheet_name]
     start_row = -1
+    if sheet.max_row is None:
+        return start_row, -1
     end_row = sheet.max_row
     i = 0
     for row in sheet.iter_rows():
@@ -36,6 +40,12 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
             start_row = i
             break
     return start_row, end_row
+
+
+def is_small_box_template(excel_file: Path) -> bool:
+    wb, sheets = get_wb_and_sheets(excel_file)
+    start, end = get_start_and_end_row_numbers(wb, sheets[0])
+    return start != -1
 
 
 def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row: int) -> List[List[str]]:
