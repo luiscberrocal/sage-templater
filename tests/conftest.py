@@ -5,7 +5,9 @@ import pytest
 
 @pytest.fixture(scope="session")
 def output_folder() -> Path:
-    return Path(__file__).parent.parent / "output"
+    f = Path(__file__).parent.parent / "output"
+    f.mkdir(parents=True, exist_ok=True)
+    return f
 
 
 @pytest.fixture(scope="session")
@@ -31,3 +33,8 @@ def mgi_template_folder(sage_folder) -> Path:
 @pytest.fixture(scope="session")
 def check_template(mgi_template_folder) -> Path:
     return mgi_template_folder / "Registro de Cheques y Transferencias Bancarias Mensual.xlsx"
+
+
+@pytest.fixture(scope="session")
+def check_template_xls(mgi_template_folder) -> Path:
+    return mgi_template_folder / "xls" / "Registro de Cheques y Transferencias Bancarias Mensual.xls"
