@@ -10,6 +10,27 @@ from sage_templater.plugins.parsers.petit_cash_excel_parsers import is_small_box
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
+import xlrd
+from openpyxl import Workbook
+from pathlib import Path
+
+def convert_xls_to_xlsx(xls_file: Path, xlsx_file: Path):
+    # Open the xls file
+    workbook_xls = xlrd.open_workbook(xls_file)
+    sheet_xls = workbook_xls.sheet_by_index(0)
+
+    # Create a new xlsx file
+    workbook_xlsx = Workbook()
+    sheet_xlsx = workbook_xlsx.active
+
+    # Copy data from xls to xlsx
+    for row in range(sheet_xls.nrows):
+        for col in range(sheet_xls.ncols):
+            sheet_xlsx.cell(row=row + 1, column=col + 1).value = sheet_xls.cell_value(row, col)
+
+    # Save the xlsx file
+    workbook_xlsx.save(xlsx_file)
+
 
 def get_excel_files(folder: Path, pattern: str = "**/*.xlsx") -> List[Path]:
     """Get excel files from a folder."""
