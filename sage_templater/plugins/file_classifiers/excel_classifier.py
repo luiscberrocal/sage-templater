@@ -5,6 +5,7 @@ from typing import List
 
 import click
 
+from sage_templater.plugins.parsers.check_excel_parsers import is_check_template
 from sage_templater.plugins.parsers.petit_cash_excel_parsers import is_small_box_template
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
@@ -22,12 +23,18 @@ def main(pattern: str = "menuda"):
         try:
             if pattern is not None and pattern in excel_file.name.lower():
                 start = time()
-                is_small_box = is_small_box_template(excel_file)
+                is_petit_cash = is_small_box_template(excel_file)
+                is_check = is_check_template(excel_file)
                 elapsed = time() - start
-                if is_small_box:
-                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {is_small_box} time: {elapsed:.2f}", fg="green")
+                if is_petit_cash:
+                    file_type = "PETIT_CASH"
+                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="green")
+                elif is_check:
+                    file_type = "CHECK"
+                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="blue")
                 else:
-                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {is_small_box} time: {elapsed:.2f}", fg="yellow")
+                    file_type = "UNKNOWN"
+                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {is_petit_cash} time: {elapsed:.2f}", fg="yellow")
 
         except Exception as e:
             click.secho(f"{i + 1} {excel_file.relative_to(folder)} {e}", fg="red")

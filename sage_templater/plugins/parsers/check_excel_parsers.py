@@ -9,10 +9,11 @@
 # Concepto
 # Proyecto
 import re
+from pathlib import Path
 
 import openpyxl
 
-from sage_templater.plugins.parsers.excel_parser import check_regular_expression
+from sage_templater.plugins.parsers.excel_parser import check_regular_expression, get_wb_and_sheets
 
 
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
@@ -37,3 +38,9 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
             start_row = i
             break
     return start_row, end_row
+
+
+def is_check_template(excel_file: Path) -> bool:
+    wb, sheets = get_wb_and_sheets(excel_file)
+    start, end = get_start_and_end_row_numbers(wb, sheets[0])
+    return start != -1
