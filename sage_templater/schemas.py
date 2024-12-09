@@ -40,3 +40,27 @@ class PetitCashSageRecordSchema(BaseModel):
     amount: Decimal
     account: str
     distribution_number: int
+# Fecha
+# No. Ck.
+# A nombre de:
+# RUC
+# DV
+# Monto
+# ITBMS
+# Total
+# Concepto
+# Proyecto
+
+class CheckRecordSchema(BaseModel):
+    """Check record schema."""
+
+    date: str
+    check_number: str
+    name: str
+    national_id: str
+    verification_digit: str
+    amount: Decimal
+    tax: Tax
+    total: Decimal
+    description: str
+    project: str
