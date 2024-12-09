@@ -5,7 +5,7 @@ from typing import List
 
 import click
 
-from sage_templater.plugins.parsers.excel_parser import is_small_box_template
+from sage_templater.plugins.parsers.petit_cash_excel_parsers import is_small_box_template
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 

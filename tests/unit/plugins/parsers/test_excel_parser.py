@@ -4,11 +4,14 @@ import openpyxl
 import pytest
 
 from sage_templater.plugins.parsers.excel_parser import (
-    clean_raw_rows,
     get_raw_rows,
-    get_start_and_end_row_numbers,
     get_wb_and_sheets,
-    parse_raw_rows, is_small_box_template,
+)
+from sage_templater.plugins.parsers.petit_cash_excel_parsers import (
+    clean_raw_rows,
+    get_start_and_end_row_numbers,
+    is_small_box_template,
+    parse_raw_rows,
 )
 
 

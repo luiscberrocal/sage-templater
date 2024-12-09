@@ -16,7 +16,7 @@ def validate_tax(value: AnyStr):
 Tax = Annotated[Decimal, BeforeValidator(validate_tax)]
 
 
-class SmallBoxRecordSchema(BaseModel):
+class PetitCashRecordSchema(BaseModel):
     """Small box record schema."""
 
     code: Optional[str] = None
@@ -32,7 +32,7 @@ class SmallBoxRecordSchema(BaseModel):
     source_file: Optional[str] = None
     source_sheet: Optional[str] = None
 
-class SmallBoxSageRecordSchema(BaseModel):
+class PetitCashSageRecordSchema(BaseModel):
     """Small box record schema for Sage import"""
     date: str
     reference: str

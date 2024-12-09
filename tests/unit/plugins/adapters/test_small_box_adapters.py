@@ -1,4 +1,4 @@
-from sage_templater.plugins.adapters.small_box_adapters import from_small_box_excel_to_dataframe
+from sage_templater.plugins.adapters.petit_cash_adapters import from_small_box_excel_to_dataframe
 
 
 class TestSmallBoxAdapters:
