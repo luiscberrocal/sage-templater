@@ -12,6 +12,8 @@ import re
 
 import openpyxl
 
+from sage_templater.plugins.parsers.excel_parser import check_regular_expression
+
 
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
     """Get start and end row numbers from a sheet with checkes and trasfer format."""
@@ -29,8 +31,8 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
         check_number_value = row[1].value
         if date_cell_value is None or not isinstance(date_cell_value, str):
             continue
-        date_match = date_regexp.match(date_cell_value)
-        check_number_match = check_number_regexp.match(check_number_value)
+        date_match = check_regular_expression(date_regexp, date_cell_value)
+        check_number_match = check_regular_expression(check_number_regexp, check_number_value)
         if date_match and check_number_match:
             start_row = i
             break

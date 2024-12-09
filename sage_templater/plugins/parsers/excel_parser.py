@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
-from typing import List
+from re import Pattern
+from typing import List, Any
 
 import openpyxl
 
@@ -10,7 +11,7 @@ from sage_templater.schemas import PetitCashRecordSchema
 logger = logging.getLogger(__name__)
 
 
-def get_wb_and_sheets(file_path: Path, only_visible:bool=True) -> (openpyxl.Workbook, List[str]):
+def get_wb_and_sheets(file_path: Path, only_visible: bool = True) -> (openpyxl.Workbook, List[str]):
     """Get workbook and sheets from an Excel file."""
     wb = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
     if only_visible:
@@ -33,6 +34,14 @@ def get_raw_rows(wb: openpyxl.Workbook, sheet_name: str, start_row: int, end_row
 def is_empty_row(raw_row: List[str]) -> bool:
     """Check if a row is empty."""
     return all(cell is None or cell == "None" for cell in raw_row)
+
+
+def check_regular_expression(regexp: Pattern, cell_value: Any) -> bool:
+    """Check if a cell value matches a regular expression."""
+    if cell_value is None or not isinstance(cell_value, str):
+        return False
+    match = regexp.match(cell_value)
+    return match is not None
 
 
 @hookimpl

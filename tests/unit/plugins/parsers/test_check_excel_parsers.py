@@ -8,4 +8,4 @@ class TestGetStartAndEndRowNumbers:
         wb, sheet_names =  get_wb_and_sheets(check_template)
         start, end = get_start_and_end_row_numbers(wb, sheet_names[0])
         assert start == 8
-        assert end == 16
+        assert end == 326
