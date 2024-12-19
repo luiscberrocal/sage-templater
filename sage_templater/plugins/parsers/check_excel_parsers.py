@@ -19,7 +19,7 @@ from sage_templater.plugins.parsers.excel_parser import check_regular_expression
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
     """Get start and end row numbers from a sheet with checks and transfer format."""
     date_regexp = re.compile(r"\s*([Ff][Ee][cC][hH][aA])\s*")
-    check_number_regexp = re.compile(r"\s*[Nn][Oo]\.?\s[Cc][Kk]\.?\s*")
+    amount_regexp = re.compile(r"\s*(Monto)\s*")
     sheet = wb[sheet_name]
     start_row = -1
     if sheet.max_row is None:
@@ -29,12 +29,12 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
     for row in sheet.iter_rows():
         i += 1
         date_cell_value = row[0].value
-        check_number_value = row[1].value
+        amount_value = row[5].value
         if date_cell_value is None or not isinstance(date_cell_value, str):
             continue
         date_match = check_regular_expression(date_regexp, date_cell_value)
-        check_number_match = check_regular_expression(check_number_regexp, check_number_value)
-        if date_match and check_number_match:
+        amount_match = check_regular_expression(amount_regexp, amount_value)
+        if date_match and amount_match:
             start_row = i
             break
     return start_row, end_row

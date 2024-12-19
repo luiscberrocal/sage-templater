@@ -54,13 +54,13 @@ class PetitCashSageRecordSchema(BaseModel):
 class CheckRecordSchema(BaseModel):
     """Check record schema."""
 
-    date: str
+    date: Optional[str] = None
     check_number: str
     name: str
-    national_id: str
-    verification_digit: str
+    national_id: Optional[str] = None
+    verification_digit: Optional[str] = None
     amount: Decimal
     tax: Tax
     total: Decimal
     description: str
-    project: str
+    project: Optional[str] = None
