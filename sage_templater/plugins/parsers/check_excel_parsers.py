@@ -17,7 +17,7 @@ from sage_templater.plugins.parsers.excel_parser import check_regular_expression
 
 
 def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tuple[int, int]:
-    """Get start and end row numbers from a sheet with checkes and trasfer format."""
+    """Get start and end row numbers from a sheet with checks and transfer format."""
     date_regexp = re.compile(r"\s*([Ff][Ee][cC][hH][aA])\s*")
     check_number_regexp = re.compile(r"\s*[Nn][Oo]\.?\s[Cc][Kk]\.?\s*")
     sheet = wb[sheet_name]

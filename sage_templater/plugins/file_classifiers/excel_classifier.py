@@ -60,9 +60,12 @@ def copy_xls_to_xlsx(input_xls: Path, output_xlsx: Path):
     print(f"Successfully copied '{input_xls}' to '{output_xlsx}'")
 
 
-def get_excel_files(folder: Path, pattern: str = "**/*.xlsx") -> List[Path]:
-    """Get excel files from a folder."""
-    return list(folder.glob(pattern))
+def get_excel_files(folder: Path, pattern: str = "**/*.xls*") -> List[Path]:
+    """Get Excel files from a folder in xls and xlsx format."""
+    excel_suffixes = (".xls", ".xlsx")
+    excel_files = [file for file in folder.glob(pattern) if file.suffix in excel_suffixes]
+
+    return excel_files
 
 
 def main(pattern: str = "menuda"):
@@ -70,21 +73,20 @@ def main(pattern: str = "menuda"):
     excel_files = get_excel_files(folder, pattern="**/*.xls")
     for i, excel_file in enumerate(excel_files):
         try:
-            if pattern is not None and pattern in excel_file.name.lower():
-                start = time()
-                is_petit_cash = is_petit_cash_template(excel_file)
-                is_check = is_check_template(excel_file)
-                elapsed = time() - start
-                if is_petit_cash:
-                    file_type = "PETIT_CASH"
-                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="green")
-                elif is_check:
-                    file_type = "CHECK"
-                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="blue")
-                else:
-                    file_type = "UNKNOWN"
-                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}",
-                                fg="yellow")
+            start = time()
+            is_petit_cash = is_petit_cash_template(excel_file)
+            is_check = is_check_template(excel_file)
+            elapsed = time() - start
+            if is_petit_cash:
+                file_type = "PETIT_CASH"
+                click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="green")
+            elif is_check:
+                file_type = "CHECK"
+                click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="blue")
+            else:
+                file_type = "UNKNOWN"
+                click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}",
+                            fg="yellow")
 
         except Exception as e:
             click.secho(f"{i + 1} {excel_file.relative_to(folder)} {e}", fg="red")
