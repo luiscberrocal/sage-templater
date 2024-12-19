@@ -118,7 +118,7 @@ class TestCleanRawRows:
         assert len(cleaned_raw_rows) == 23
 
 
-class TestParseRawRows:
+class TestParseRawRowsForPetitCash:
     def test_parse_raw_rows(self, small_box_xlsx_c1) -> None:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         sheet_name = "14 DE ENERO "
@@ -168,3 +168,10 @@ class TestIsSmallBoxTemplate:
         # /home/luiscberrocal/Downloads/sage/data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx
         xl_file = sage_folder / 'data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx'
         assert is_petit_cash_template(xl_file)
+        
+class TestParseRawRowsForChecks:
+    def test_parse_raw_rows(self, small_box_xlsx_c1) -> None:
+        wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
+        sheet_name = "14 DE ENERO "
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
