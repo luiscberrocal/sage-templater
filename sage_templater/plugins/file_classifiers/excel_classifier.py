@@ -5,7 +5,7 @@ from typing import List
 import click
 
 from sage_templater.plugins.parsers.check_excel_parsers import is_check_template
-from sage_templater.plugins.parsers.petit_cash_excel_parsers import is_small_box_template
+from sage_templater.plugins.parsers.petit_cash_excel_parsers import is_petit_cash_template
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
@@ -32,8 +32,6 @@ def convert_xls_to_xlsx(xls_file: Path, xlsx_file: Path):
     workbook_xlsx.save(xlsx_file)
 
 
-# Function to copy data from xls to xlsx
-
 def copy_xls_to_xlsx(input_xls: Path, output_xlsx: Path):
     # Open the xls file using xlrd
     workbook_xls = xlrd.open_workbook(input_xls, formatting_info=False)
@@ -51,26 +49,16 @@ def copy_xls_to_xlsx(input_xls: Path, output_xlsx: Path):
         sheet_xls = workbook_xls.sheet_by_index(sheet_idx)
         sheet_xlsx = workbook_xlsx.create_sheet(title=sheet_xls.name)
 
-        # Iterate through rows and columns to copy values and formulas
+        # Iterate through rows and columns to copy values
         for row_idx in range(sheet_xls.nrows):
             for col_idx in range(sheet_xls.ncols):
                 cell_value = sheet_xls.cell_value(row_idx, col_idx)
-                cell_type = sheet_xls.cell(row_idx, col_idx).ctype
-
-                if cell_type == xlrd.XL_CELL_FORMULA:
-                    # Preserve formulas
-                    formula = sheet_xls.cell(row_idx, col_idx).formula
-                    sheet_xlsx.cell(row=row_idx + 1, column=col_idx + 1, value=f"={formula}")
-                else:
-                    # Preserve cell value
-                    sheet_xlsx.cell(row=row_idx + 1, column=col_idx + 1, value=cell_value)
+                sheet_xlsx.cell(row=row_idx + 1, column=col_idx + 1, value=cell_value)
 
     # Save the xlsx workbook
     workbook_xlsx.save(output_xlsx)
     print(f"Successfully copied '{input_xls}' to '{output_xlsx}'")
 
-
-# Example usage
 
 def get_excel_files(folder: Path, pattern: str = "**/*.xlsx") -> List[Path]:
     """Get excel files from a folder."""
@@ -79,12 +67,12 @@ def get_excel_files(folder: Path, pattern: str = "**/*.xlsx") -> List[Path]:
 
 def main(pattern: str = "menuda"):
     folder = Path.home() / "Downloads" / "sage"  # / "data_ls"
-    excel_files = get_excel_files(folder)
+    excel_files = get_excel_files(folder, pattern="**/*.xls")
     for i, excel_file in enumerate(excel_files):
         try:
             if pattern is not None and pattern in excel_file.name.lower():
                 start = time()
-                is_petit_cash = is_small_box_template(excel_file)
+                is_petit_cash = is_petit_cash_template(excel_file)
                 is_check = is_check_template(excel_file)
                 elapsed = time() - start
                 if is_petit_cash:
@@ -95,7 +83,7 @@ def main(pattern: str = "menuda"):
                     click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}", fg="blue")
                 else:
                     file_type = "UNKNOWN"
-                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {is_petit_cash} time: {elapsed:.2f}",
+                    click.secho(f"{i + 1} {excel_file.relative_to(folder)} {file_type} time: {elapsed:.2f}",
                                 fg="yellow")
 
         except Exception as e:

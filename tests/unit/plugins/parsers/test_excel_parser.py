@@ -10,7 +10,7 @@ from sage_templater.plugins.parsers.excel_parser import (
 from sage_templater.plugins.parsers.petit_cash_excel_parsers import (
     clean_raw_rows,
     get_start_and_end_row_numbers,
-    is_small_box_template,
+    is_petit_cash_template,
     parse_raw_rows,
 )
 
@@ -158,13 +158,13 @@ class TestParseRawRows:
 
 class TestIsSmallBoxTemplate:
     def test_is_small_box_template(self, small_box_xlsx_c1) -> None:
-        assert is_small_box_template(small_box_xlsx_c1)
+        assert is_petit_cash_template(small_box_xlsx_c1)
 
     def test_error(self, sage_folder):
         xl_file = sage_folder / 'data_ls/Año 2023/Estados Financieros Formateados Logic Studio 2023 - auditoría.xlsx'
-        assert not is_small_box_template(xl_file)
+        assert not is_petit_cash_template(xl_file)
 
     def test_error2(self, sage_folder):
         # /home/luiscberrocal/Downloads/sage/data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx
         xl_file = sage_folder / 'data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx'
-        assert is_small_box_template(xl_file)
+        assert is_petit_cash_template(xl_file)

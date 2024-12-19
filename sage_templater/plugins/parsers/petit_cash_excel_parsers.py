@@ -31,7 +31,9 @@ def get_start_and_end_row_numbers(wb: openpyxl.Workbook, sheet_name: str) -> tup
     return start_row, end_row
 
 
-def is_small_box_template(excel_file: Path) -> bool:
+def is_petit_cash_template(excel_file: Path) -> bool:
+    if excel_file.suffix != ".xlsx":
+        return False
     wb, sheets = get_wb_and_sheets(excel_file)
     start, end = get_start_and_end_row_numbers(wb, sheets[0])
     return start != -1
