@@ -1,11 +1,11 @@
 import factory
 
-from sage_templater.schemas import SmallBoxRecordSchema
+from sage_templater.schemas import PetitCashRecordSchema
 
 
 class SmallBoxRecordSchemaFactory(factory.Factory):
     class Meta:
-        model = SmallBoxRecordSchema
+        model = PetitCashRecordSchema
 
     code = factory.Faker("ean8")
     national_id = factory.Faker("ssn")

@@ -2,7 +2,7 @@ from typing import List
 
 import pluggy
 
-from sage_templater.schemas import SmallBoxRecordSchema
+from sage_templater.schemas import PetitCashRecordSchema
 
 hookspec = pluggy.HookspecMarker("template_parser")
 hookimpl = pluggy.HookimplMarker("template_parser")
@@ -10,7 +10,7 @@ hookimpl = pluggy.HookimplMarker("template_parser")
 
 class TemplateParserSpecs:
     @hookspec
-    def parse_file(self: str) -> List[SmallBoxRecordSchema]:
+    def parse_file(self: str) -> List[PetitCashRecordSchema]:
         """Parse a file and return a list of SmallBoxRecordSchema."""
         pass
 

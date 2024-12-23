@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from sage_templater.schemas import SmallBoxRecordSchema
+from sage_templater.schemas import PetitCashRecordSchema
 from tests.factories import SmallBoxRecordSchemaFactory
 
 
@@ -34,5 +34,5 @@ class TestSmallBoxRecordSchema:
             "source_file": "/agree/edge.mp3",
             "source_sheet": "security",
         }
-        schema = SmallBoxRecordSchema(**schema_dict)
+        schema = PetitCashRecordSchema(**schema_dict)
         assert schema.tax == Decimal("0.0")

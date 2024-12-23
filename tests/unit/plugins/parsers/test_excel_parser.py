@@ -3,12 +3,16 @@ from pathlib import Path
 import openpyxl
 import pytest
 
+from sage_templater.plugins.file_classifiers.excel_classifier import copy_xls_to_xlsx
 from sage_templater.plugins.parsers.excel_parser import (
-    clean_raw_rows,
     get_raw_rows,
-    get_start_and_end_row_numbers,
     get_wb_and_sheets,
-    parse_raw_rows, is_small_box_template,
+)
+from sage_templater.plugins.parsers.petit_cash_excel_parsers import (
+    clean_raw_rows,
+    get_start_and_end_row_numbers,
+    is_petit_cash_template,
+    parse_raw_rows,
 )
 
 
@@ -115,7 +119,7 @@ class TestCleanRawRows:
         assert len(cleaned_raw_rows) == 23
 
 
-class TestParseRawRows:
+class TestParseRawRowsForPetitCash:
     def test_parse_raw_rows(self, small_box_xlsx_c1) -> None:
         wb, sheets = get_wb_and_sheets(small_box_xlsx_c1)
         sheet_name = "14 DE ENERO "
@@ -155,13 +159,25 @@ class TestParseRawRows:
 
 class TestIsSmallBoxTemplate:
     def test_is_small_box_template(self, small_box_xlsx_c1) -> None:
-        assert is_small_box_template(small_box_xlsx_c1)
+        assert is_petit_cash_template(small_box_xlsx_c1)
 
     def test_error(self, sage_folder):
         xl_file = sage_folder / 'data_ls/Año 2023/Estados Financieros Formateados Logic Studio 2023 - auditoría.xlsx'
-        assert not is_small_box_template(xl_file)
+        assert not is_petit_cash_template(xl_file)
 
     def test_error2(self, sage_folder):
         # /home/luiscberrocal/Downloads/sage/data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx
         xl_file = sage_folder / 'data_dc/2023/5. Mayo/Cajas menudas/CAJA MENUDA CHIRIQUI OPERACIONES MAYO 2023.xlsx'
-        assert is_small_box_template(xl_file)
+        assert is_petit_cash_template(xl_file)
+
+class TestParseRawRowsForChecks:
+    def test_parse_raw_rows(self, fixtures_folder) -> None:
+        xls_file = fixtures_folder / "checks_registry.xls"
+        xlsx_file = fixtures_folder / "checks_registry.xlsx"
+        copy_xls_to_xlsx(xls_file, xlsx_file)
+
+        wb, sheets = get_wb_and_sheets(xlsx_file)
+        sheet_name = sheets[0]
+        start_row, end_row = get_start_and_end_row_numbers(wb, sheet_name)
+        raw_rows = get_raw_rows(wb, sheet_name, start_row, end_row)
+        assert len(raw_rows) == 9
