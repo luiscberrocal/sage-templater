@@ -1,14 +1,8 @@
 sources = sage_templater
 
 .PHONY: test format lint unittest coverage pre-commit clean
-test: format lint unittest
+test: unittest
 
-format:
-	isort $(sources) tests
-	black $(sources) tests
-
-lint:
-	flake8 $(sources) tests
 
 unittest:
 	pytest

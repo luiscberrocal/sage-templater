@@ -3,16 +3,16 @@ from pathlib import Path
 import pandas as pd
 
 from sage_templater.exceptions import SageParseRawError
-from sage_templater.plugins.parsers.excel_parser import get_wb_and_sheets, get_start_and_end_row_numbers, get_raw_rows, \
-    parse_raw_rows
-from sage_templater.schemas import SmallBoxRecordSchema, SmallBoxSageRecordSchema
+from sage_templater.plugins.parsers.excel_parser import get_raw_rows, get_wb_and_sheets
+from sage_templater.plugins.parsers.petit_cash_excel_parsers import get_start_and_end_row_numbers, parse_raw_rows
+from sage_templater.schemas import PetitCashRecordSchema, PetitCashSageRecordSchema
 
 
-def export_small_box_sage_record(record: SmallBoxRecordSchema, reference: str) -> SmallBoxSageRecordSchema:
+def export_small_box_sage_record(record: PetitCashRecordSchema, reference: str) -> PetitCashSageRecordSchema:
     """Export a small box record to a Sage record."""
     description = (f"{record.name} ruc {record.national_id} dv {record.verification_digit} "
                    f"fact: {record.invoice} {record.description}")
-    return SmallBoxSageRecordSchema(
+    return PetitCashSageRecordSchema(
         date=record.date,
         reference=reference,
         description=description,
