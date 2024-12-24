@@ -4,7 +4,7 @@ from typing import Annotated, AnyStr, Optional
 from pydantic import BaseModel, BeforeValidator
 
 
-def validate_tax(value: AnyStr):
+def validate_decimal(value: AnyStr):
     """Validate the tax value."""
     if isinstance(value, tuple):
         value = value[0]
@@ -13,7 +13,9 @@ def validate_tax(value: AnyStr):
     return Decimal(value)
 
 
-Tax = Annotated[Decimal, BeforeValidator(validate_tax)]
+Tax = Annotated[Decimal, BeforeValidator(validate_decimal)]
+Amount = Annotated[Decimal, BeforeValidator(validate_decimal)]
+Total = Annotated[Decimal, BeforeValidator(validate_decimal)]
 
 
 class PetitCashRecordSchema(BaseModel):
@@ -25,12 +27,13 @@ class PetitCashRecordSchema(BaseModel):
     name: str
     invoice: Optional[str] = None
     date: str
-    amount: Decimal
+    amount: Amount
     tax: Tax
-    total: Decimal
+    total: Total
     description: str
     source_file: Optional[str] = None
     source_sheet: Optional[str] = None
+
 
 class PetitCashSageRecordSchema(BaseModel):
     """Small box record schema for Sage import"""
@@ -40,6 +43,8 @@ class PetitCashSageRecordSchema(BaseModel):
     amount: Decimal
     account: str
     distribution_number: int
+
+
 # Fecha
 # No. Ck.
 # A nombre de:
